@@ -1,98 +1,111 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
+  Form,
+  FormField,
   Box,
   Button,
-  Collapsible,
-  Heading,
   Grommet,
-  Layer,
   ResponsiveContext,
 } from 'grommet'
-import { FormClose, Notification } from 'grommet-icons'
-const theme = {
-  colors: {
-    brand: 'blue',
-  },
-  global: {
-    font: {
-      family: 'Roboto',
-      size: '18px',
-      height: '20px',
-    },
-  },
-}
+import {
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  Line,
+  ResponsiveContainer,
+} from 'recharts'
 
-const AppBar = (props: any) => (
-  <Box
-    tag="header"
-    direction="row"
-    align="center"
-    justify="between"
-    background="brand"
-    pad={{ left: 'medium', right: 'small', vertical: 'small' }}
-    elevation="medium"
-    style={{ zIndex: '1' }}
-    {...props}
-  />
-)
+import Navbar from './Navbar'
+import THEME from './theme'
 
-function App() {
-  const [showSidebar, setShowSidebar] = useState(false)
+const data = [
+  {
+    name: 'Page A',
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: 'Page B',
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: 'Page C',
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: 'Page D',
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: 'Page E',
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: 'Page F',
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: 'Page G',
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+]
+
+function App(): React.ReactElement {
   return (
-    <Grommet theme={theme} full themeMode="dark">
+    <Grommet full theme={THEME}>
       <ResponsiveContext.Consumer>
         {size => (
           <Box fill>
-            <AppBar>
-              <Heading level="3" margin="none">
-                My App
-              </Heading>
-              <Button
-                icon={<Notification />}
-                onClick={() => setShowSidebar(!showSidebar)}
-              />
-            </AppBar>
+            <Navbar>
+              <Button color="white" margin={{ right: '1rem' }}>
+                Black Scholes
+              </Button>
+              <Button color="white">XYZ</Button>
+            </Navbar>
             <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
-              <Box flex align="center" justify="center">
-                app body
+              <Box flex basis="1/4" pad="small">
+                <Form onSubmit={(e: any) => console.log(e.value)}>
+                  <FormField name="underlying" label="Price of Underlying" />
+                  <FormField name="strike" label="Strike Price" />
+                  <FormField name="maturity" label="Time to Maturity" />
+                  <FormField name="volatilty" label="Volatility" />
+                  <FormField name="interest" label="Interest Rate" />
+                  <FormField name="dividend" label="Dividend Yield" />
+                  <Button type="submit" primary label="Submit" />
+                </Form>
               </Box>
-              {!showSidebar || size !== 'small' ? (
-                <Collapsible direction="horizontal" open={showSidebar}>
-                  <Box
-                    flex
-                    width="medium"
-                    background="light-2"
-                    elevation="small"
-                    align="center"
-                    justify="center"
+              <Box flex basis="3/4" pad="small">
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart
+                    width={730}
+                    height={250}
+                    data={data}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                   >
-                    sidebar
-                  </Box>
-                </Collapsible>
-              ) : (
-                <Layer>
-                  <Box
-                    background="light-2"
-                    tag="header"
-                    justify="end"
-                    align="center"
-                    direction="row"
-                  >
-                    <Button
-                      icon={<FormClose />}
-                      onClick={() => setShowSidebar(false)}
-                    />
-                  </Box>
-                  <Box
-                    fill
-                    background="light-2"
-                    align="center"
-                    justify="center"
-                  >
-                    sidebar
-                  </Box>
-                </Layer>
-              )}
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Legend />
+                    <Line type="monotone" dataKey="pv" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Box>
             </Box>
           </Box>
         )}
