@@ -24,7 +24,9 @@ import THEME from './theme'
 
 function App(): React.ReactElement {
   const [data, setData] = useState([] as any)
-  const [request, response] = useFetch('http://localhost:8000')
+  const [request, response] = useFetch(
+    'https://financial-calculator.ibf-devops.ch',
+  )
 
   async function calculateResult(e: any) {
     await request.post('/black_scholes', e.value)
