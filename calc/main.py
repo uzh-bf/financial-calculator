@@ -52,7 +52,7 @@ def black_scholes_call_div(S, K, T, r, q, sigma):
 @app.post("/black_scholes")
 def calc_black_scholes(input: BlackScholesInput):
     result = list()
-    for i in range(max(int(input.strike) - 50, 0), int(input.strike + 50)):
+    for i in range(1, int(input.strike * 2)):
         put_price, call_price, d1, d2 = black_scholes_call_div(
             i,
             input.strike,
