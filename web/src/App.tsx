@@ -6,6 +6,7 @@ import {
   Button,
   Grommet,
   ResponsiveContext,
+  Header,
 } from 'grommet'
 import {
   LineChart,
@@ -77,6 +78,11 @@ function App(): React.ReactElement {
               </Button>
               <Button color="white">XYZ</Button>
             </Navbar>
+
+            <Box pad="small">
+              <Header as="h1">The Black-Scholes Formula</Header>
+            </Box>
+
             <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
               <Box flex basis="1/4" pad="small">
                 <Form onSubmit={(e: any) => console.log(e.value)}>
@@ -89,6 +95,7 @@ function App(): React.ReactElement {
                   <Button type="submit" primary label="Submit" />
                 </Form>
               </Box>
+
               <Box flex basis="3/4" pad="small">
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart
