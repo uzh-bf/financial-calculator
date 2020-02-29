@@ -18,7 +18,8 @@
     "react-scripts": "3.4.0",
     "recharts": "1.8.5",
     "styled-components": "5.0.1",
-    "typescript": "3.7.5"
+    "typescript": "3.7.5",
+    "use-http": "^0.2.9"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.12.0",
