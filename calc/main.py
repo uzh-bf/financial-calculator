@@ -46,12 +46,14 @@ def black_scholes_call_div(S, K, T, r, q, sigma):
         -q * T
     ) * si.norm.cdf(-d1, 0.0, 1.0)
 
-    return put, call, d1, d2
+    return np.round(put, 2), np.round(call, 2), np.round(d1, 2), np.round(d2, 2)
 
 
 @app.post("/black_scholes")
 def calc_black_scholes(input: BlackScholesInput):
-    result = list()
+    result = dict()
+
+    series = list()
     for i in range(1, int(input.strike * 2)):
         put_price, call_price, d1, d2 = black_scholes_call_div(
             i,
@@ -61,7 +63,25 @@ def calc_black_scholes(input: BlackScholesInput):
             input.dividend,
             input.volatility,
         )
-        result.append(
+        series.append(
             {"d1": d1, "d2": d2, "call": call_price, "put": put_price, "underlying": i}
         )
+    result["series"] = series
+
+    specific_result = black_scholes_call_div(
+        input.underlying,
+        input.strike,
+        input.maturity,
+        input.interest,
+        input.dividend,
+        input.volatility,
+    )
+    result["specific"] = {
+        "call": specific_result[0],
+        "put": specific_result[1],
+        "d1": specific_result[2],
+        "d2": specific_result[3],
+        **input.dict(),
+    }
+
     return result
