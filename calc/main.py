@@ -10,7 +10,7 @@ app = FastAPI()
 # add a CORS middleware to allow local cross-port requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://financial-calculator.now.sh", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
