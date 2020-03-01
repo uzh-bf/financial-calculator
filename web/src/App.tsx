@@ -10,7 +10,9 @@ import {
   ResponsiveContext,
   Collapsible,
   List,
+  Anchor,
 } from 'grommet'
+import { DocumentExcel, Github } from 'grommet-icons'
 import {
   LineChart,
   CartesianGrid,
@@ -210,23 +212,54 @@ function App(): React.ReactElement {
                       }
                     }}
                   />
-                  <Button type="submit" primary label="Submit" />
+                  <Box direction="row">
+                    <Box
+                      direction="column"
+                      basis="100%"
+                      margin={{ top: '1rem' }}
+                    >
+                      <Box direction="row" margin={{ bottom: '1rem' }}>
+                        <DocumentExcel />
+                        <Anchor
+                          href="#"
+                          label="Excel Calculator"
+                          margin={{ left: '0.5rem' }}
+                        />
+                      </Box>
+                      <Box direction="row">
+                        <Github />
+                        <Anchor
+                          target="_blank"
+                          href="https://github.com/rschlaefli/financial-calculator/blob/master/calc/black_scholes.py"
+                          label="Python Code"
+                          margin={{ left: '0.5rem' }}
+                        />
+                      </Box>
+                    </Box>
+                    <Box
+                      direction="column"
+                      basis="150px"
+                      margin={{ top: '1rem' }}
+                    >
+                      <Button type="submit" primary label="Submit" />
+                    </Box>
+                  </Box>
                 </Form>
               </Box>
 
-              <Box flex basis="3/4" pad="small">
-                <ResponsiveContainer width="100%" height={400}>
+              <Box flex basis="3/4">
+                <ResponsiveContainer width="100%" height={350}>
                   <LineChart
-                    width={730}
-                    height={250}
                     data={series}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    margin={{ top: 15, right: 15, left: 15, bottom: 15 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="underlying" />
                     <YAxis />
                     <Legend />
-                    <ReferenceLine x={110} stroke="red" />
+                    {result && (
+                      <ReferenceLine x={result.underlying} stroke="red" />
+                    )}
                     <Line
                       type="monotone"
                       dataKey="call"

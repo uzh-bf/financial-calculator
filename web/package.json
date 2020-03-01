@@ -15,13 +15,13 @@
     "grommet-icons": "4.4.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
-    "react-katex": "^2.0.2",
+    "react-katex": "2.0.2",
     "react-scripts": "3.4.0",
     "recharts": "1.8.5",
     "styled-components": "5.0.1",
     "typescript": "3.7.5",
-    "use-http": "^0.2.9",
-    "yup": "^0.28.1"
+    "use-http": "0.2.9",
+    "yup": "0.28.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.12.0",
