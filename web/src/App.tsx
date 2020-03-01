@@ -1,3 +1,5 @@
+import 'katex/dist/katex.min.css'
+
 import React, { useState } from 'react'
 import {
   Form,
@@ -6,7 +8,8 @@ import {
   Button,
   Grommet,
   ResponsiveContext,
-  Header,
+  Collapsible,
+  List,
 } from 'grommet'
 import {
   LineChart,
@@ -16,14 +19,77 @@ import {
   Legend,
   Line,
   ResponsiveContainer,
+  Tooltip,
+  ReferenceLine,
 } from 'recharts'
 import useFetch from 'use-http'
+import { InlineMath, BlockMath } from 'react-katex'
+import { number } from 'yup'
 
 import Navbar from './Navbar'
 import THEME from './theme'
 
+function CustomTooltip({ label, payload }: any) {
+  const underlying = { name: 'St', value: label }
+  return (
+    payload && (
+      <List
+        border
+        background="white"
+        primaryKey="name"
+        secondaryKey="value"
+        data={[underlying, ...payload]}
+        pad="small"
+      />
+    )
+  )
+}
+
+function BlackScholes({
+  underlying,
+  strike,
+  maturity,
+  volatility,
+  interest,
+  dividend,
+  d1,
+  d2,
+  call,
+  put,
+}: any): React.ReactElement {
+  const d1Format = d1 || 'd_1'
+  const d2Format = d2 || 'd_2'
+  const d1Result = d1 ? `${d1} =` : ''
+  const d2Result = d2 ? `${d2} =` : ''
+  const callResult = call ? `${call} =` : ''
+  const putResult = put ? `${put} =` : ''
+  const St = underlying || 'S_t'
+  const K = strike || 'K'
+  const sigma = volatility || '\\sigma'
+  const t = maturity || 'T - t'
+  const r = interest || 'r'
+  const q = dividend != null ? dividend : 'q'
+  return (
+    <>
+      <BlockMath
+        math={`d_1= ${d1Result} \\frac{1}{\\textcolor{orange}{${sigma}} \\sqrt{\\textcolor{blue}{${t}}}} \\left[\\ln{\\left(\\frac{\\textcolor{red}{${St}}}{\\textcolor{green}{${K}}}\\right)} + \\left(\\textcolor{grey}{${r}} - \\textcolor{aqua}{${q}} + \\frac{\\textcolor{orange}{${sigma}}^2}{2} \\right) (\\textcolor{blue}{${t}}) \\right]`}
+      />
+      <BlockMath
+        math={`d_2= ${d2Result} \\frac{1}{\\textcolor{orange}{${sigma}} \\sqrt{\\textcolor{blue}{${t}}}} \\left[\\ln{\\left(\\frac{\\textcolor{red}{${St}}}{\\textcolor{green}{${K}}}\\right)} + \\left(\\textcolor{grey}{${r}} - \\textcolor{aqua}{${q}} - \\frac{\\textcolor{orange}{${sigma}}^2}{2} \\right) (\\textcolor{blue}{${t}}) \\right]`}
+      />
+      <BlockMath
+        math={`C(S_t,t)= ${callResult} \\textcolor{red}{${St}} \\Phi(${d1Format}) - \\textcolor{green}{${K}}e^{-\\textcolor{grey}{${r}}(\\textcolor{blue}{${t}})}\\Phi(${d2Format})`}
+      />
+      <BlockMath
+        math={`P(S_t,t)= ${putResult} \\textcolor{green}{${K}}e^{-\\textcolor{grey}{${r}}(\\textcolor{blue}{${t}})}\\Phi(-${d2Format}) - \\textcolor{red}{${St}}\\Phi(-${d1Format})`}
+      />
+    </>
+  )
+}
+
 function App(): React.ReactElement {
-  const [data, setData] = useState([] as any)
+  const [series, setSeries] = useState([] as any)
+  const [result, setResult] = useState()
   const [request, response] = useFetch(
     'https://financial-calculator.ibf-devops.ch',
   )
@@ -31,8 +97,8 @@ function App(): React.ReactElement {
   async function calculateResult(e: any) {
     await request.post('/black_scholes', e.value)
     if (response.ok) {
-      console.log(response.data)
-      setData(response.data)
+      setSeries(response.data.series)
+      setResult(response.data.specific)
     }
   }
 
@@ -48,19 +114,102 @@ function App(): React.ReactElement {
               <Button color="white">XYZ</Button>
             </Navbar>
 
-            <Box pad="small">
-              <Header as="h1">The Black-Scholes Formula</Header>
-            </Box>
-
             <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
               <Box flex basis="1/4" pad="small">
-                <Form onSubmit={calculateResult}>
-                  <FormField name="underlying" label="Price of Underlying" />
-                  <FormField name="strike" label="Strike Price" />
-                  <FormField name="maturity" label="Time to Maturity" />
-                  <FormField name="volatility" label="Volatility" />
-                  <FormField name="interest" label="Interest Rate" />
-                  <FormField name="dividend" label="Dividend Yield" />
+                <Form onSubmit={calculateResult} validate="submit">
+                  <FormField
+                    name="underlying"
+                    label={
+                      <InlineMath math="\text{Price of Underlying } (\textcolor{red}{S_t})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .positive()
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a positive numerical value for "Price of Underlying"'
+                      }
+                    }}
+                  />
+                  <FormField
+                    name="strike"
+                    label={
+                      <InlineMath math="\text{Strike Price } (\textcolor{green}{K})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .positive()
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a positive numerical value for "Strike Price"'
+                      }
+                    }}
+                  />
+                  <FormField
+                    name="maturity"
+                    label={
+                      <InlineMath math="\text{Time to Maturity } (\textcolor{blue}{T - t})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .positive()
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a positive numerical value for "Time to Maturity"'
+                      }
+                    }}
+                  />
+                  <FormField
+                    name="volatility"
+                    label={
+                      <InlineMath math="\text{Volatility } (\textcolor{orange}{\sigma})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .min(0)
+                          .max(1)
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a numerical value within [0, 1] for "Volatility"'
+                      }
+                    }}
+                  />
+                  <FormField
+                    name="interest"
+                    label={
+                      <InlineMath math="\text{Interest Rate } (\textcolor{grey}{r})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .min(0)
+                          .max(1)
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a numerical value within [0, 1] for "Interest Rate"'
+                      }
+                    }}
+                  />
+                  <FormField
+                    name="dividend"
+                    label={
+                      <InlineMath math="\text{Dividend Yield } (\textcolor{aqua}{q})" />
+                    }
+                    validate={(value, _) => {
+                      if (
+                        !number()
+                          .min(0)
+                          .max(1)
+                          .isValidSync(value)
+                      ) {
+                        return 'Provide a numerical value within [0, 1] for "Dividend Yield"'
+                      }
+                    }}
+                  />
                   <Button type="submit" primary label="Submit" />
                 </Form>
               </Box>
@@ -70,17 +219,41 @@ function App(): React.ReactElement {
                   <LineChart
                     width={730}
                     height={250}
-                    data={data}
+                    data={series}
                     margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="underlying" />
                     <YAxis />
                     <Legend />
-                    <Line type="monotone" dataKey="call" stroke="#8884d8" />
-                    <Line type="monotone" dataKey="put" stroke="#82ca9d" />
+                    <ReferenceLine x={110} stroke="red" />
+                    <Line
+                      type="monotone"
+                      dataKey="call"
+                      stroke="#8884d8"
+                      name="C"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="put"
+                      stroke="#82ca9d"
+                      name="P"
+                    />
+                    <Tooltip content={CustomTooltip} />
                   </LineChart>
                 </ResponsiveContainer>
+
+                <Box direction="row">
+                  <Box flex basis="1/2" pad="small" alignContent="center">
+                    <Collapsible open>
+                      <BlackScholes />
+                    </Collapsible>
+                  </Box>
+
+                  <Box flex basis="1/2" pad="small" alignContent="center">
+                    {result && [<BlackScholes {...result} />]}
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>
