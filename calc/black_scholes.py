@@ -1,6 +1,5 @@
 import numpy as np
 import scipy.stats as si
-import pandas as pd
 # from pricing_2d import pricing_2d
 # from perm_matrix import perm_matrix ; from scipy . interpolate import interpn
 # import timeit
