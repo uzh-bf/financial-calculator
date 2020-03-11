@@ -72,11 +72,12 @@ def calc_barrier_reverse_convertible():
 
     # TODO: read real time series from CSV
     series = pd.Series([1, 2, 3, 2, 1])
+    print(black_scholes.compute_barrier_reverse_convertible(20, 20, 0.75, 0.01, 0, 0.15, 18, 1000, 0.0045))
 
     # TODO: hydrate result from computation output
     print("Transformation")
-    transformed_series = series.apply(black_scholes.compute_barrier_reverse_convertible)
+    #transformed_series = series.apply(lambda S: black_scholes.compute_barrier_reverse_convertible(, ))
     print("\nResult Series")
-    print(transformed_series)
+
 
     return result
