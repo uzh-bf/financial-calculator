@@ -1,6 +1,6 @@
 FROM python:3.8
 
-COPY main.py requirements.txt ./
+COPY . ./
 
 RUN set -x && pip install -r requirements.txt
 

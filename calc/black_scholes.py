@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.stats as si
+import pandas as pd
 # from pricing_2d import pricing_2d
 # from perm_matrix import perm_matrix ; from scipy . interpolate import interpn
 # import timeit
@@ -67,20 +68,17 @@ def compute_barrier_reverse_convertible(S, K, T, r, q, sigma, H, Nom, cds, c):
     coupon = (money_for_coupon * ((1 + r + cds) ** T)) / Nom
 
     # 6. Schritt: Fair Value Bond 
-    trading_days = np.arange(1, T*250, 1).tolist()
+    trading_days = pd.Series(np.arange(1, 250, 1).tolist())
 
-    for i in trading_days:
-        print(i)
-    
-    #fair_value_bond = ((1 + coupon) * Nom) / np.exp(-(r + cds) * (T - trading_days) / 250)
+    fair_value_bond = trading_days.apply(lambda i: ((1 + coupon) * Nom) / np.exp(-(r + cds) * (T - (i/ 250))))
     
     # 6. Schritt: Berechnung Struki
-    #barrier_reverse_convertible =  fair_value_bond - down_and_in_put * Nom/K
+    barrier_reverse_convertible = fair_value_bond - down_and_in_put * Nom/K
 
     # 7. Schritt: Normierung Struki
-    #norm_bar_rev_conv = (barrier_reverse_convertible / barrier_reverse_convertible.shape[0]) * 100
+    norm_bar_rev_conv = (barrier_reverse_convertible / barrier_reverse_convertible.iloc[0]) * 100
 
     # 8. Schritt: Normierung Basiswert
-    norm_spot_price = (S / S.shape[0]) * 100
+    norm_spot_price = (S / S.iloc[0]) * 100
 
-    return np.round(lambda_var, 2), np.round(gamma, 2), np.round(x1, 2), np.round(y1, 2), np.round(down_and_in_put, 2) #, np.round(zero_bond, 2), np.round(barrier_reverse_convertible, 2), np.round(norm_bar_rev_conv, 2), np.round(norm_spot_price, 2)
+    return np.round(lambda_var, 2), np.round(gamma, 2), np.round(x1, 2), np.round(y1, 2), np.round(down_and_in_put, 2), np.round(fair_value_bond, 2), np.round(barrier_reverse_convertible, 2), np.round(norm_bar_rev_conv, 2), np.round(norm_spot_price, 2)

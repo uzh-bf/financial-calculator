@@ -64,22 +64,38 @@ def calc_black_scholes(input: BlackScholesInput):
     return result
 
 
-@app.post("/reverse_convertible")
-def calc_barrier_reverse_convertible():
-    # TODO: implement input type and params
-    # TODO: implement result structure
-    result = dict()
+class BarrierReverseConvertibleInput(BaseModel):
+    maturity: float
+    volatility: float
+    interest: float
+    dividend: float
+    barrier: float
+    nominal: float
+    cds: float
+    c: float
 
-    # TODO: read real time series from CSV
-    series = pd.Series([1, 2, 3, 2, 1])
-    #print(black_scholes.compute_barrier_reverse_convertible(20, 20, 0.75, 0.01, 0, 0.15, 18, 1000, 0.0045))
-    print(black_scholes.compute_barrier_reverse_convertible(40, 35, 0.4166667, 0.01, 0, 0.18, 30, 1000, 0.005, 0.05))
 
+@app.post("/barrier_reverse_convertible")
+def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
+    # read time series from CSV
+    underlying = pd.read_csv("up.csv", header=None, names=["spot"])["spot"]
 
-    # TODO: hydrate result from computation output
-    print("Transformation")
-    #transformed_series = series.apply(lambda S: black_scholes.compute_barrier_reverse_convertible(, ))
-    print("\nResult Series")
+    # process the input time series
+    result = list()
+    for i, S in enumerate(underlying):
+        lambda_res, gamma, x1, y1, put, bond, convertible = black_scholes.compute_barrier_reverse_convertible(
+            S,
+            underlying.iloc[0],
+            input.maturity,
+            input.interest,
+            input.dividend,
+            input.volatility,
+            input.barrier,
+            input.nominal,
+            input.cds,
+            input.c,
+        )
 
+        result.append({"t": i, "underlying": S, "convertible": convertible})
 
     return result
