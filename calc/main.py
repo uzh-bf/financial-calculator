@@ -1,4 +1,5 @@
 import black_scholes
+import pandas as pd
 
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -59,5 +60,23 @@ def calc_black_scholes(input: BlackScholesInput):
         "d2": specific_result[3],
         **input.dict(),
     }
+
+    return result
+
+
+@app.post("/reverse_convertible")
+def calc_barrier_reverse_convertible():
+    # TODO: implement input type and params
+    # TODO: implement result structure
+    result = dict()
+
+    # TODO: read real time series from CSV
+    series = pd.Series([1, 2, 3, 2, 1])
+
+    # TODO: hydrate result from computation output
+    print("Transformation")
+    transformed_series = series.apply(black_scholes.compute_barrier_reverse_convertible)
+    print("\nResult Series")
+    print(transformed_series)
 
     return result

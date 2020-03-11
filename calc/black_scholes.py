@@ -23,3 +23,7 @@ def compute_black_scholes(S, K, T, r, q, sigma):
     ) * si.norm.cdf(-d1, 0.0, 1.0)
 
     return np.round(put, 2), np.round(call, 2), np.round(d1, 2), np.round(d2, 2)
+
+
+def compute_barrier_reverse_convertible(X):
+    print(f"TBD: you gave me {X}")
