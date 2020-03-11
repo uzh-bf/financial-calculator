@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Form, FormField, Box, Button, Anchor, List } from 'grommet'
+import { Form, FormField, Box, Button, Anchor, List, Header } from 'grommet'
 import { DocumentExcel, Github } from 'grommet-icons'
 import {
   LineChart,
@@ -11,6 +11,7 @@ import {
   Line,
   ResponsiveContainer,
   Tooltip,
+  ReferenceLine,
 } from 'recharts'
 import { InlineMath } from 'react-katex'
 import { number } from 'yup'
@@ -51,6 +52,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
       <Box flex basis="1/4" pad="small">
         <Form onSubmit={calculateResult} validate="submit">
           <FormField
+            defaultValue={1}
             name="maturity"
             label={<InlineMath math="\text{Time to Maturity } (T - t)" />}
             validate={(value, _) => {
@@ -64,6 +66,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={0.15}
             name="volatility"
             label={<InlineMath math="\text{Volatility } (\sigma)" />}
             validate={(value, _) => {
@@ -78,6 +81,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={0.01}
             name="interest"
             label={<InlineMath math="\text{Interest Rate } (r)" />}
             validate={(value, _) => {
@@ -92,6 +96,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={0}
             name="dividend"
             label={<InlineMath math="\text{Dividend Yield } (q)" />}
             validate={(value, _) => {
@@ -106,6 +111,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={18}
             name="barrier"
             label={<InlineMath math="\text{Barrier } (H)" />}
             validate={(value, _) => {
@@ -119,6 +125,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={1000}
             name="nominal"
             label={<InlineMath math="\text{Nominal Value } (nom)" />}
             validate={(value, _) => {
@@ -132,6 +139,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={0.0045}
             name="cds"
             label={<InlineMath math="\text{Credit Default Swap } (cds)" />}
             validate={(value, _) => {
@@ -145,6 +153,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
             }}
           />
           <FormField
+            defaultValue={0.0665}
             name="c"
             label={<InlineMath math="\text{Coupon } (c)" />}
             validate={(value, _) => {
@@ -187,49 +196,56 @@ function BarrierReverseConvertible({ request, response }: Props) {
       </Box>
 
       <Box flex basis="3/4">
-        <ResponsiveContainer width="100%" height={350}>
-          <LineChart
-            data={series}
-            margin={{ top: 15, right: 15, left: 15, bottom: 15 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="t" />
-            <YAxis type="number" domain={['dataMin - 10%', 'dataMax + 10%']} />
-            <Legend />
+        {['up', 'sideways', 'down'].map(scenario => (
+          <>
+            <Header as="h2">{scenario}</Header>
+            <ResponsiveContainer width="100%" height={350}>
+              <LineChart
+                // syncId="charts"
+                data={series[scenario] ? series[scenario].series : []}
+                margin={{ top: 15, right: 15, left: 15, bottom: 15 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="t" allowDecimals={false} />
+                <YAxis
+                  allowDecimals={false}
+                  type="number"
+                  domain={[
+                    (dataMin: number) => Math.abs(0.85 * dataMin),
+                    (dataMax: number) => Math.abs(1.15 * dataMax),
+                  ]}
+                />
+                <Legend />
 
-            <Line
-              type="monotone"
-              dataKey="underlying"
-              stroke="#8884d8"
-              name="Underlying"
-            />
-            <Line
-              type="monotone"
-              dataKey="convertible"
-              stroke="#82ca9d"
-              name="Convertible"
-            />
-            <Line
-              type="monotone"
-              dataKey="put"
-              stroke="#82ca9d"
-              name="Put"
-            />
-            {/* <Line
-              type="monotone"
-              dataKey="bond"
-              stroke="#82ca9d"
-              name="Bond"
-            /> */}
-            {/* <Line
-              type="monotone"
-              dataKey="coupon"
-              stroke="#82ca9d"
-              name="Coupon"
-            /> */}
-            <Tooltip content={CustomTooltip} />
-          </LineChart>
-        </ResponsiveContainer>
+                <Line
+                  dot={false}
+                  type="monotone"
+                  dataKey="underlying"
+                  stroke="#8884d8"
+                  name="Underlying"
+                />
+                <Line
+                  dot={false}
+                  type="monotone"
+                  dataKey="convertible"
+                  stroke="#82ca9d"
+                  name="Convertible"
+                />
+                {/* <Line
+                  dot={false}
+                  type="monotone"
+                  dataKey="put"
+                  stroke="grey"
+                  name="Put"
+                /> */}
+                {series[scenario] && (
+                  <ReferenceLine y={series[scenario].barrier} stroke="red" />
+                )}
+                <Tooltip content={CustomTooltip} />
+              </LineChart>
+            </ResponsiveContainer>
+          </>
+        ))}
       </Box>
     </Box>
   )

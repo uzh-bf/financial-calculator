@@ -18,6 +18,44 @@ app.add_middleware(
 )
 
 
+def process_series(underlying, input):
+    result = list()
+    for i, S in enumerate(underlying):
+        put, coupon, bond, norm_convertible, norm_spot = black_scholes.compute_barrier_reverse_convertible(
+            S,
+            underlying.iloc[0],
+            input.maturity,
+            input.interest,
+            input.dividend,
+            input.volatility,
+            input.barrier,
+            input.nominal,
+            input.cds,
+            input.c,
+            i,
+        )
+
+        result.append(
+            {
+                "t": i,
+                "underlying": norm_spot,
+                # "lambda": lambda_res,
+                # "gamma": gamma,
+                # "x1": x1,
+                # "y1": y1,
+                "put": put,
+                "bond": bond,
+                "convertible": norm_convertible,
+                "coupon": coupon,
+            }
+        )
+
+    return {
+        "barrier": input.barrier / underlying.iloc[0] * 100,
+        "series": result
+    }
+
+
 class BlackScholesInput(BaseModel):
     strike: float
     underlying: float
@@ -79,38 +117,13 @@ class BarrierReverseConvertibleInput(BaseModel):
 @app.post("/barrier_reverse_convertible")
 def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
     # read time series from CSV
-    underlying = pd.read_csv("up.csv", header=None, names=["spot"])["spot"]
+    underlying_down = pd.read_csv("down.csv", header=None, names=["spot"])["spot"]
+    underlying_side = pd.read_csv("sideways.csv", header=None, names=["spot"])["spot"]
+    underlying_up = pd.read_csv("up.csv", header=None, names=["spot"])["spot"]
 
     # process the input time series
-    result = list()
-    for i, S in enumerate(underlying):
-        put, coupon, bond, norm_convertible, norm_spot = black_scholes.compute_barrier_reverse_convertible(
-            S,
-            underlying.iloc[0],
-            input.maturity,
-            input.interest,
-            input.dividend,
-            input.volatility,
-            input.barrier,
-            input.nominal,
-            input.cds,
-            input.c,
-            i,
-        )
-
-        result.append(
-            {
-                "t": i,
-                "underlying": norm_spot,
-                # "lambda": lambda_res,
-                # "gamma": gamma,
-                # "x1": x1,
-                # "y1": y1,
-                "put": put,
-                "bond": bond,
-                "convertible": norm_convertible,
-                "coupon": coupon
-            }
-        )
-
-    return result
+    return {
+        "up": process_series(underlying_up, input),
+        "sideways": process_series(underlying_side, input),
+        "down": process_series(underlying_down, input)
+    }
