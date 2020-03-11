@@ -11,7 +11,7 @@ app = FastAPI()
 # add a CORS middleware to allow local cross-port requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://financial-calculator.now.sh"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,10 +50,7 @@ def process_series(underlying, input):
             }
         )
 
-    return {
-        "barrier": input.barrier / underlying.iloc[0] * 100,
-        "series": result
-    }
+    return {"barrier": input.barrier / underlying.iloc[0] * 100, "series": result}
 
 
 class BlackScholesInput(BaseModel):
@@ -125,5 +122,5 @@ def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
     return {
         "up": process_series(underlying_up, input),
         "sideways": process_series(underlying_side, input),
-        "down": process_series(underlying_down, input)
+        "down": process_series(underlying_down, input),
     }
