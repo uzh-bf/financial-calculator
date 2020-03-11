@@ -72,6 +72,7 @@ class BarrierReverseConvertibleInput(BaseModel):
     barrier: float
     nominal: float
     cds: float
+    c: float
 
 
 @app.post("/barrier_reverse_convertible")
@@ -92,6 +93,7 @@ def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
             input.barrier,
             input.nominal,
             input.cds,
+            input.c,
         )
 
         result.append({"t": i, "underlying": S, "convertible": convertible})
