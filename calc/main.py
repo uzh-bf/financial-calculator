@@ -1,5 +1,6 @@
 import black_scholes
 import pandas as pd
+import numpy as np
 
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -83,7 +84,7 @@ def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
     # process the input time series
     result = list()
     for i, S in enumerate(underlying):
-        lambda_res, gamma, x1, y1, put, bond, convertible = black_scholes.compute_barrier_reverse_convertible(
+        put, coupon, bond, norm_convertible, norm_spot = black_scholes.compute_barrier_reverse_convertible(
             S,
             underlying.iloc[0],
             input.maturity,
@@ -94,8 +95,22 @@ def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
             input.nominal,
             input.cds,
             input.c,
+            i,
         )
 
-        result.append({"t": i, "underlying": S, "convertible": convertible})
+        result.append(
+            {
+                "t": i,
+                "underlying": norm_spot,
+                # "lambda": lambda_res,
+                # "gamma": gamma,
+                # "x1": x1,
+                # "y1": y1,
+                "put": put,
+                "bond": bond,
+                "convertible": norm_convertible,
+                "coupon": coupon
+            }
+        )
 
     return result

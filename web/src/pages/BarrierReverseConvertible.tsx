@@ -21,7 +21,7 @@ interface Props {
 }
 
 function CustomTooltip({ label, payload }: any) {
-  const underlying = { name: 'St', value: label }
+  const underlying = { name: 't', value: label }
   return (
     payload && (
       <List
@@ -144,6 +144,20 @@ function BarrierReverseConvertible({ request, response }: Props) {
               }
             }}
           />
+          <FormField
+            name="c"
+            label={<InlineMath math="\text{Coupon } (c)" />}
+            validate={(value, _) => {
+              if (
+                !number()
+                  .min(0)
+                  .max(1)
+                  .isValidSync(value)
+              ) {
+                return 'Provide a numerical value within [0, 1] for "Coupon"'
+              }
+            }}
+          />
 
           <Box direction="row">
             <Box direction="column" basis="100%" margin={{ top: '1rem' }}>
@@ -180,7 +194,7 @@ function BarrierReverseConvertible({ request, response }: Props) {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="t" />
-            <YAxis />
+            <YAxis type="number" domain={['dataMin - 10%', 'dataMax + 10%']} />
             <Legend />
 
             <Line
@@ -195,6 +209,24 @@ function BarrierReverseConvertible({ request, response }: Props) {
               stroke="#82ca9d"
               name="Convertible"
             />
+            <Line
+              type="monotone"
+              dataKey="put"
+              stroke="#82ca9d"
+              name="Put"
+            />
+            {/* <Line
+              type="monotone"
+              dataKey="bond"
+              stroke="#82ca9d"
+              name="Bond"
+            /> */}
+            {/* <Line
+              type="monotone"
+              dataKey="coupon"
+              stroke="#82ca9d"
+              name="Coupon"
+            /> */}
             <Tooltip content={CustomTooltip} />
           </LineChart>
         </ResponsiveContainer>

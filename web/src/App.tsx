@@ -13,8 +13,8 @@ import THEME from './theme'
 function App(): React.ReactElement {
   const [currentPage, setCurrentPage] = useState('brc')
   const [request, response] = useFetch(
-    'https://financial-calculator.ibf-devops.ch',
-    // 'http://localhost:8000',
+    // 'https://financial-calculator.ibf-devops.ch',
+    'http://localhost:8000',
   )
 
   return (
