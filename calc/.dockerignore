@@ -1,10 +1,8 @@
 *
 
+!data/
+
 !__init__.py
 !black_scholes.py
 !main.py
 !requirements.txt
-!up.csv
-!sideways.csv
-!zerobond.csv
-!down.csv
