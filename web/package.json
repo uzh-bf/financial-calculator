@@ -20,7 +20,7 @@
     "recharts": "1.8.5",
     "styled-components": "5.1.0",
     "typescript": "3.8.3",
-    "use-http": "0.3.7",
+    "use-http": "1.0.7",
     "yup": "0.28.3"
   },
   "devDependencies": {
