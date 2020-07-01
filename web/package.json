@@ -19,7 +19,7 @@
     "react-scripts": "3.4.1",
     "recharts": "1.8.5",
     "styled-components": "5.1.1",
-    "typescript": "3.8.3",
+    "typescript": "3.9.5",
     "use-http": "0.3.7",
     "yup": "0.28.3"
   },
