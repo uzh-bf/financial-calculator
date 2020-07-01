@@ -10,4 +10,4 @@ websockets==8.1
 numpy==1.18.4
 scipy==1.4.1
 httpie==2.1.0
-pandas==1.0.4
+pandas==1.0.5
