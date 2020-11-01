@@ -13,7 +13,7 @@
     "formik": "2.1.6",
     "grommet": "2.15.0",
     "grommet-icons": "4.5.0",
-    "react": "16.13.1",
+    "react": "16.14.0",
     "react-dom": "16.13.1",
     "react-katex": "2.0.2",
     "react-scripts": "3.4.3",
