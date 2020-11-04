@@ -5,7 +5,8 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-import black_scholes
+import src.black_scholes as black_scholes
+import src.barrier_reverse_convertible as brc
 
 app = FastAPI()
 
@@ -66,7 +67,7 @@ def calc_black_scholes(input: BlackScholesInput):
             "d1": d1,
             "d2": d2,
             **input.dict(),
-        }
+        },
     }
 
 
@@ -93,13 +94,9 @@ def calc_barrier_reverse_convertible(input: BarrierReverseConvertibleInput):
     # calculate the barrier reverse convertible for all values on the time-series
     # returns three result lists that can be plotted against each other (one for each scenario)
     return {
-        "up": black_scholes.compute_barrier_reverse_convertible_series(
-            underlying_up, input
-        ),
-        "sideways": black_scholes.compute_barrier_reverse_convertible_series(
+        "up": brc.compute_barrier_reverse_convertible_series(underlying_up, input),
+        "sideways": brc.compute_barrier_reverse_convertible_series(
             underlying_side, input
         ),
-        "down": black_scholes.compute_barrier_reverse_convertible_series(
-            underlying_down, input
-        ),
+        "down": brc.compute_barrier_reverse_convertible_series(underlying_down, input),
     }

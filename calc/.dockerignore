@@ -2,7 +2,5 @@
 
 !data/
 
-!__init__.py
-!black_scholes.py
-!main.py
+!src/
 !requirements.txt
