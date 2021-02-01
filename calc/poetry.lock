@@ -297,7 +297,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pytest"
-version = "6.2.1"
+version = "6.2.2"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
@@ -466,7 +466,7 @@ standard = ["websockets (>=8.0.0,<9.0.0)", "watchgod (>=0.6,<0.7)", "python-dote
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "7faa5a489e95fa796294dda1c856af3921b0757628263487c20311d54a279227"
+content-hash = "4c35abd11cd3546508d512b5f090dc45bbd37cf06d86574870e3424a7cbca1a9"
 
 [metadata.files]
 appdirs = [
@@ -653,8 +653,8 @@ pysocks = [
     {file = "PySocks-1.7.1.tar.gz", hash = "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"},
 ]
 pytest = [
-    {file = "pytest-6.2.1-py3-none-any.whl", hash = "sha256:1969f797a1a0dbd8ccf0fecc80262312729afea9c17f1d70ebf85c5e76c6f7c8"},
-    {file = "pytest-6.2.1.tar.gz", hash = "sha256:66e419b1899bc27346cb2c993e12c5e5e8daba9073c1fbce33b9807abc95c306"},
+    {file = "pytest-6.2.2-py3-none-any.whl", hash = "sha256:b574b57423e818210672e07ca1fa90aaf194a4f63f3ab909a2c67ebb22913839"},
+    {file = "pytest-6.2.2.tar.gz", hash = "sha256:9d1edf9e7d0b84d72ea3dbcdfd22b35fb543a5e8f2a60092dd578936bf63d7f9"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
