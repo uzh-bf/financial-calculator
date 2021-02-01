@@ -17,7 +17,7 @@
     "react-dom": "16.14.0",
     "react-katex": "2.0.2",
     "react-scripts": "3.4.3",
-    "recharts": "1.8.5",
+    "recharts": "2.0.4",
     "styled-components": "5.2.1",
     "typescript": "3.9.7",
     "use-http": "0.3.7",
