@@ -110,7 +110,7 @@ python-versions = "*"
 
 [[package]]
 name = "httpie"
-version = "2.3.0"
+version = "2.4.0"
 description = "HTTPie: command-line HTTP client for the API era."
 category = "main"
 optional = false
@@ -466,7 +466,7 @@ standard = ["websockets (>=8.0.0,<9.0.0)", "watchgod (>=0.6,<0.7)", "python-dote
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ba55dec41b6056c9d7671e07b30b3f6bba5c0ae752bacbd20c1a69f3419ff331"
+content-hash = "a4be21056ca976ba66de79e85527af97651c7d2d0f6230754709d34437a0633f"
 
 [metadata.files]
 appdirs = [
@@ -509,8 +509,8 @@ h11 = [
     {file = "h11-0.11.0.tar.gz", hash = "sha256:3c6c61d69c6f13d41f1b80ab0322f1872702a3ba26e12aa864c928f6a43fbaab"},
 ]
 httpie = [
-    {file = "httpie-2.3.0-py3-none-any.whl", hash = "sha256:e34983be20427073e465f0c3e3615f896c19ed5202827328a47ceda40f57f0c6"},
-    {file = "httpie-2.3.0.tar.gz", hash = "sha256:d540571991d07329d217c31bf1ff95fd217957da2aa2def09bcfa0c0fca0cf96"},
+    {file = "httpie-2.4.0-py3-none-any.whl", hash = "sha256:9b69f611734d8c0f7fffe96d2f9f9e3a2cfed6974a94053a43ca87e21b5ef5c8"},
+    {file = "httpie-2.4.0.tar.gz", hash = "sha256:4d1bf5779cf6c9007351cfcaa20bd19947267dc026af09246db6006a8927d8c6"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
