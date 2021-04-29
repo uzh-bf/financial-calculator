@@ -1,0 +1,54 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/web"
+  schedule:
+    interval: monthly
+    time: "06:00"
+  open-pull-requests-limit: 99
+  reviewers:
+  - rschlaefli
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: react-scripts
+    versions:
+    - 4.0.1
+  - dependency-name: "@testing-library/react"
+    versions:
+    - 11.2.2
+    - 11.2.3
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.17
+    - 14.14.22
+  - dependency-name: recharts
+    versions:
+    - 2.0.0
+    - 2.0.4
+  - dependency-name: yup
+    versions:
+    - 0.32.8
+  - dependency-name: "@types/react-dom"
+    versions:
+    - 17.0.0
+  - dependency-name: "@types/react"
+    versions:
+    - 17.0.0
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.19
+  - dependency-name: typescript
+    versions:
+    - 4.1.3
+- package-ecosystem: pip
+  directory: "/calc"
+  schedule:
+    interval: monthly
+    time: "06:00"
+  open-pull-requests-limit: 99
+  reviewers:
+  - rschlaefli
+  ignore:
+  - dependency-name: uvicorn
+    versions:
+    - 0.13.3
