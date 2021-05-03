@@ -16,7 +16,7 @@ pandas = "^1.2.4"
 
 [tool.poetry.dev-dependencies]
 pylama = "^7.7.1"
-black = {version = "^20.8b1", allow-prereleases = true}
+black = {version = "^21.4b2", allow-prereleases = true}
 pytest = "^6.2.3"
 
 [build-system]
