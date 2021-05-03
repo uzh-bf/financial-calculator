@@ -450,7 +450,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "uvicorn"
-version = "0.12.2"
+version = "0.13.4"
 description = "The lightning-fast ASGI server."
 category = "main"
 optional = false
@@ -461,12 +461,12 @@ click = ">=7.0.0,<8.0.0"
 h11 = ">=0.8"
 
 [package.extras]
-standard = ["websockets (>=8.0.0,<9.0.0)", "watchgod (>=0.6,<0.7)", "python-dotenv (>=0.13)", "PyYAML (>=5.1)", "httptools (>=0.1.0,<0.2.0)", "uvloop (>=0.14.0)", "colorama (>=0.4)"]
+standard = ["websockets (>=8.0.0,<9.0.0)", "watchgod (>=0.6)", "python-dotenv (>=0.13)", "PyYAML (>=5.1)", "httptools (>=0.1.0,<0.2.0)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "colorama (>=0.4)"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "15b790734618c0e05f488ebba26755998414010466e11b6286530d39507a6a50"
+content-hash = "55b2dad480eea4e03cf7c77d8a3425598be2bd2c177a9cb709af9209f6c70853"
 
 [metadata.files]
 appdirs = [
@@ -785,6 +785,6 @@ urllib3 = [
     {file = "urllib3-1.25.11.tar.gz", hash = "sha256:8d7eaa5a82a1cac232164990f04874c594c9453ec55eef02eab885aa02fc17a2"},
 ]
 uvicorn = [
-    {file = "uvicorn-0.12.2-py3-none-any.whl", hash = "sha256:e5dbed4a8a44c7b04376021021d63798d6a7bcfae9c654a0b153577b93854fba"},
-    {file = "uvicorn-0.12.2.tar.gz", hash = "sha256:8ff7495c74b8286a341526ff9efa3988ebab9a4b2f561c7438c3cb420992d7dd"},
+    {file = "uvicorn-0.13.4-py3-none-any.whl", hash = "sha256:7587f7b08bd1efd2b9bad809a3d333e972f1d11af8a5e52a9371ee3a5de71524"},
+    {file = "uvicorn-0.13.4.tar.gz", hash = "sha256:3292251b3c7978e8e4a7868f4baf7f7f7bb7e40c759ecc125c37e99cdea34202"},
 ]
