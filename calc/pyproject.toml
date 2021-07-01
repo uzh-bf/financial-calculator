@@ -12,7 +12,7 @@ uvicorn = "^0.12.2"
 numpy = "^1.21.0"
 scipy = "^1.6.1"
 httpie = "^2.4.0"
-pandas = "^1.2.4"
+pandas = "^1.2.5"
 
 [tool.poetry.dev-dependencies]
 pylama = "^7.7.1"
